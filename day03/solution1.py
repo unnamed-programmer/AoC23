@@ -20,23 +20,27 @@ for i, row in enumerate(inputArray):
 
 # Calculate adjacent numbers
 partNumbers = []
+usedCoords = []
 
 for index in indices:
     adjacentIndices = [(int(index[0] + i), int(index[1] + j)) for i in (-1, 0, 1) for j in (-1, 0, 1)]
     for adjacentIndex in adjacentIndices:
         partNumber = []
-        if inputArray[adjacentIndex[0]][adjacentIndex[1]].isdigit():
+        if inputArray[adjacentIndex[0]][adjacentIndex[1]].isdigit() and adjacentIndex not in usedCoords:
+            usedCoords.append(adjacentIndex)
             partNumber.insert(0, inputArray[adjacentIndex[0]][adjacentIndex[1]])
             i = 1
             while inputArray[adjacentIndex[0]][adjacentIndex[1] - i].isdigit():
+                usedCoords.append((adjacentIndex[0],adjacentIndex[1] - i))
                 partNumber.insert(0, inputArray[adjacentIndex[0]][adjacentIndex[1] - i])
                 i += 1
             i = 1
             while inputArray[adjacentIndex[0]][adjacentIndex[1] + i].isdigit():
+                usedCoords.append((adjacentIndex[0],adjacentIndex[1] + i))
                 partNumber.append(inputArray[adjacentIndex[0]][adjacentIndex[1] + i])
                 i += 1
             partNumber = "".join(partNumber)
-            if partNumber not in partNumbers: partNumbers.append(partNumber)
+            partNumbers.append(partNumber)
             print(partNumbers)
 
 # Add up numbers to find total
