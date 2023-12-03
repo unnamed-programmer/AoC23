@@ -1,16 +1,17 @@
 import os
 currentPath = os.path.normpath(os.path.realpath(os.path.split(__file__)[0]))
-filename = os.path.join(currentPath, "testin.txt")
+filename = os.path.join(currentPath, "input.txt")
 
 with open(filename, 'r') as f:
     inputArray = f.readlines()
 
 # Find the possible symbols in the file (could be hardcoded but nah)
-known_chars = set('.0123456789\n')
+knownChars = set('.0123456789\n')
 possibleSymbols = set()
 for row in inputArray:
-    possibleSymbols.update(set(row) - known_chars - possibleSymbols)
+    possibleSymbols.update(set(row) - knownChars - possibleSymbols)
 possibleSymbols = list(possibleSymbols)
+print(possibleSymbols)
 
 # Find indices of each symbol
 indices = []
@@ -21,9 +22,9 @@ for i, row in enumerate(inputArray):
 partNumbers = []
 
 for index in indices:
-    partNumber = []
     adjacentIndices = [(int(index[0] + i), int(index[1] + j)) for i in (-1, 0, 1) for j in (-1, 0, 1)]
     for adjacentIndex in adjacentIndices:
+        partNumber = []
         if inputArray[adjacentIndex[0]][adjacentIndex[1]].isdigit():
             partNumber.insert(0, inputArray[adjacentIndex[0]][adjacentIndex[1]])
             i = 1
@@ -32,14 +33,12 @@ for index in indices:
                 i += 1
             i = 1
             while inputArray[adjacentIndex[0]][adjacentIndex[1] + i].isdigit():
-                partNumber.insert(-1, inputArray[adjacentIndex[0]][adjacentIndex[1] - i])
+                partNumber.append(inputArray[adjacentIndex[0]][adjacentIndex[1] + i])
                 i += 1
-        partNumber = "".join(partNumber)
-        partNumbers.append(partNumber)
-        print(partNumbers)
-
-
-
-
+            partNumber = "".join(partNumber)
+            if partNumber not in partNumbers: partNumbers.append(partNumber)
+            print(partNumbers)
 
 # Add up numbers to find total
+partNumbersSum = sum(int(i) for i in partNumbers)
+print(partNumbersSum)
