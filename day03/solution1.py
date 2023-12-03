@@ -11,7 +11,6 @@ possibleSymbols = set()
 for row in inputArray:
     possibleSymbols.update(set(row) - known_chars - possibleSymbols)
 possibleSymbols = list(possibleSymbols)
-print(possibleSymbols)
 
 # Find indices of each symbol
 indices = []
