@@ -19,11 +19,12 @@ for i, row in enumerate(inputArray):
     indices.extend((i, j) for j, symbol in enumerate(row) if symbol in possibleSymbols)
 
 # Calculate adjacent numbers
-partNumbers = []
+gearRatios = []
 usedCoords = []
 
 for index in indices:
     adjacentIndices = [(int(index[0] + i), int(index[1] + j)) for i in (-1, 0, 1) for j in (-1, 0, 1)]
+    partNumbers = []
     for adjacentIndex in adjacentIndices:
         partNumber = []
         if inputArray[adjacentIndex[0]][adjacentIndex[1]].isdigit() and adjacentIndex not in usedCoords:
@@ -42,7 +43,13 @@ for index in indices:
             partNumber = "".join(partNumber)
             partNumbers.append(partNumber)
             print(partNumbers)
+    if len(partNumbers) == 2:
+        product = 1
+        for i in partNumbers:
+            product *= int(i)
+        gearRatios.append(product)
+        print(gearRatios)
 
 # Add up numbers to find total
-partNumbersSum = sum(int(i) for i in partNumbers)
-print(partNumbersSum)
+gearRatiosSum = sum(int(i) for i in gearRatios)
+print(gearRatiosSum)
