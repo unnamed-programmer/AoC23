@@ -14,14 +14,18 @@ tempSeeds = [int(i) for i in
             .split(' ')
              if i]
 
+incrementRange = 100000
+incrementStart = 0
+incrementEnd = len(tempSeeds)
+
 print("Finding seeds")
 seeds = []
-for i in range(0, len(tempSeeds), 2):
+for i in range(incrementStart, incrementEnd, 2):
     start = tempSeeds[i]
     length = tempSeeds[i + 1]
-    for j in range(start, start + length, 100000):
+    for j in range(start, start + length, incrementRange):
         seeds.append(j)
-        print(j)
+        #print(j)
 print("Found seeds")
 
 # Parse inputs and generate map table
@@ -42,14 +46,18 @@ print("Finished creating map arrays")
 
 # Map seeds to final results
 mappedSeeds = [[i] for i in seeds]
-for seed in mappedSeeds:
+for l, seed in enumerate(mappedSeeds):
+    print(f'\nSeed {l} of {len(mappedSeeds)}', end='')
     for seedIndex, mapTable in enumerate(mapTables):
+        #print(f'\nMap table {seedIndex}...', end='')
         for seedMap in mapTable:
+            print('.', end='')
             if seed[seedIndex] >= seedMap[0] and seed[seedIndex] < seedMap[1]:
                 seed.append(seed[seedIndex] + seedMap[2])
-                print(f"{seed[seedIndex]} maps to {seed[seedIndex + 1]} in {seedMap}")
-            else:
-                print(f"{seed[seedIndex]} does NOT map in {seedMap}")
+                break
+                # print(f"{seed[seedIndex]} maps to {seed[seedIndex + 1]} in {seedMap}")
+            # else:
+                # print(f"{seed[seedIndex]} does NOT map in {seedMap}")
         if len(seed) == seedIndex + 1:
             seed.append(seed[seedIndex])
 
@@ -58,4 +66,4 @@ for mappedSeed in mappedSeeds:
     if mappedSeed[-1] < lowestNumber:
         lowestNumber = mappedSeed[-1]
 
-print(lowestNumber)
+print(f'\n\n{lowestNumber}')
