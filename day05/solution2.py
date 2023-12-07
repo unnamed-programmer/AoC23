@@ -1,5 +1,4 @@
 import os
-from re import M
 currentPath = os.path.normpath(os.path.realpath(os.path.split(__file__)[0]))
 filename = os.path.join(currentPath, "input.txt")
 
@@ -14,18 +13,22 @@ tempSeeds = [int(i) for i in
             .split(' ')
              if i]
 
-incrementRange = 100000
-incrementStart = 0
-incrementEnd = len(tempSeeds)
+incrementRange = 10
+incrementStart = 2301594147
+incrementEnd = 3107440111
+
+minimum = 0
+maximum = float('inf')
 
 print("Finding seeds")
 seeds = []
-for i in range(incrementStart, incrementEnd, 2):
+for i in range(0, len(tempSeeds), 2):
     start = tempSeeds[i]
     length = tempSeeds[i + 1]
     for j in range(start, start + length, incrementRange):
-        seeds.append(j)
-        #print(j)
+        if start >= minimum and length < (maximum - minimum):
+            seeds.append(j)
+            #print(j)
 print("Found seeds")
 
 # Parse inputs and generate map table
@@ -51,7 +54,7 @@ for l, seed in enumerate(mappedSeeds):
     for seedIndex, mapTable in enumerate(mapTables):
         #print(f'\nMap table {seedIndex}...', end='')
         for seedMap in mapTable:
-            print('.', end='')
+            # print('.', end='')
             if seed[seedIndex] >= seedMap[0] and seed[seedIndex] < seedMap[1]:
                 seed.append(seed[seedIndex] + seedMap[2])
                 break
@@ -61,9 +64,20 @@ for l, seed in enumerate(mappedSeeds):
         if len(seed) == seedIndex + 1:
             seed.append(seed[seedIndex])
 
-lowestNumber = 99999999999999999
-for mappedSeed in mappedSeeds:
-    if mappedSeed[-1] < lowestNumber:
-        lowestNumber = mappedSeed[-1]
+print("\n\nFinding lowest number...")
 
-print(f'\n\n{lowestNumber}')
+lowestNumber = float('inf')
+secondLowestNumber = float('inf')
+lowestOrigin = 0
+secondLowestOrigin = 0
+for mappedSeed in mappedSeeds:
+    value = mappedSeed[-1]
+    origin = mappedSeed[0]
+    if value < lowestNumber:
+        secondLowestNumber, lowestNumber = lowestNumber, value
+        secondLowestOrigin, lowestOrigin = lowestOrigin, origin
+
+print(f'{lowestNumber}, {secondLowestNumber} from {lowestOrigin}, {secondLowestOrigin}')
+pass
+
+# 52511249
