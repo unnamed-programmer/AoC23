@@ -1,6 +1,8 @@
+def findMostCommon(card: list[int]) -> int: return max(card, key=card.count)
+
 def gradeCard(card: list[int]) -> int:
     # return (grade, digit0, digit1..4) in int form, g01234
-    mostCommon = max(card, key=card.count)
+    mostCommon = findMostCommon(card)
     maxFrequency = card.count(mostCommon)
     cardCopy = [c for c in card if c != mostCommon]
     result = ''
@@ -10,14 +12,14 @@ def gradeCard(card: list[int]) -> int:
         case 4:
             result = '6'
         case 3:
-            secondMaxFrequency = cardCopy.count( max(cardCopy, key=cardCopy.count) )
+            secondMaxFrequency = cardCopy.count( findMostCommon(cardCopy) )
             match secondMaxFrequency:
                 case 2:
                     result = '5'
                 case _:
                     result = '4'
         case 2:
-            secondMaxFrequency = cardCopy.count( max(cardCopy, key=cardCopy.count) )
+            secondMaxFrequency = cardCopy.count( findMostCommon(cardCopy) )
             match secondMaxFrequency:
                 case 2:
                     result = '3'
