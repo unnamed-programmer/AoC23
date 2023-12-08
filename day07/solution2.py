@@ -1,9 +1,16 @@
-def findMostCommon(card: list[int]) -> int:
-    return max(card, key=card.count) if card else 1
+def findMostCommon(card: list[int | str]) -> int:
+    for i in card:
+        if isinstance(i, str):
+            card.remove(i)
+    if not card: card = [1]
+    mostCommon = max(card, key=card.count)
+# sourcery skip: swap-if-expression
+    return mostCommon if not isinstance(mostCommon, str) else 1
 
-def gradeCard(card: list[int]) -> int:
+def gradeCard(card: list[int | str]) -> int:
     # return (grade, digit0, digit1..4) in int form, g01234
     mostCommon = findMostCommon(card)
+    card = [mostCommon if i == 'J' else i for i in cards]
     maxFrequency = card.count(mostCommon)
     cardCopy = [c for c in card if c != mostCommon]
     result = ''
@@ -48,9 +55,9 @@ for hand in givenHands:
     cardToIntDict = {'A': 14, 'K': 13, 'Q': 12, 'J': 'J', 'T': 10, '9': 9, '8': 8, '7': 7, '6': 6, '5': 5, '4': 4, '3': 3, '2': 2}
     cards = [cardToIntDict[i] for i in hand[0]]
     bid = int(hand[1])
-    if cards == ['J' for _ in range(5)]:
-        pass
-    grade = gradeCard([i if i != 'J' else 1 for i in cards])
+
+    grade = gradeCard(list(cards))
+
     if 'J' in cards:
         mostCommon = findMostCommon([i for i in cards if i != 'J'])
         cards = [i if i != 'J' else mostCommon for i in cards]

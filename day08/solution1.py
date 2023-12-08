@@ -21,21 +21,20 @@ def findElementMap(inputArray):
     return elementMap
 
 elementMap = findElementMap(inputArray)
+firstMap = next(iter(elementMap))
 
-answer = next(iter(elementMap))
-steps = 0
 
-while answer != 'ZZZ':
-    for side in directions:
+answer = 'AAA'
+continuing = True
+tries = 0
+
+while continuing:
+    for direction in directions:
         element = elementMap[answer]
-        answer = element[0] if side == 'L' else element[1]
-        steps += 1
-        print(f'{steps} - {answer}: {elementMap[answer]}, {side}')
-        # if 'ZZZ' in elementMap[answer][0]: raise RuntimeError('dingus')
-        if answer == 'ZZZ':
-            break
-        if steps >= 100000: raise RuntimeError('nah too high')
+        answer = element[0] if direction == 'L' else element[1]
+        if answer == 'ZZZ': continuing = False
+        tries += 1
+        print(answer)
+        if tries >= 100000: raise RuntimeError
 
-
-# between 10000 and 100000
-# print(steps)
+print(tries)
