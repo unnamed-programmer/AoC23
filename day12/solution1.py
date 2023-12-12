@@ -33,7 +33,7 @@ for row in inputArray:
     spaces = [0 for _ in range(len(runLengths) - 1)]
     if gapsTotal - len(spaces) > 0:
         gapCombinations = []
-        for offset in range(gapsTotal - len(spaces)):
+        for offset in range(gapsTotal - len(spaces) + 1):
             gapCombinations += [insertReturn(i, 0, offset) for i in splitNumber(gapsTotal - offset, len(spaces))]
     else:
         gapCombinations = splitNumber(gapsTotal, len(spaces))
