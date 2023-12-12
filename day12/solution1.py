@@ -23,6 +23,7 @@ def getInput():
     return inputArray
 
 inputArray = [[i.strip('\n').split(' ')[0], [int(j) for j in i.strip('\n').split(' ')[1].split(',')]] for i in getInput()]
+totalPossible = 0
 
 for row in inputArray:
     allRowCombinations = []
@@ -33,36 +34,45 @@ for row in inputArray:
     spaces = [0 for _ in range(len(runLengths) - 1)]
     if gapsTotal - len(spaces) > 0:
         gapCombinations = []
-        for offset in range(gapsTotal - len(spaces) + 1):
-            gapCombinations += [insertReturn(i, 0, offset) for i in splitNumber(gapsTotal - offset, len(spaces))]
+        for preOffset in range(gapsTotal - len(spaces) + 1):
+            for postOffset in range(gapsTotal - len(spaces) - preOffset + 1):
+                gapCombinations += [[preOffset] + splitNum + [postOffset] for splitNum in splitNumber(gapsTotal - preOffset - postOffset, len(spaces))]
     else:
-        gapCombinations = splitNumber(gapsTotal, len(spaces))
+        gapCombinations = [[0] + splitNum + [0] for splitNum in splitNumber(gapsTotal, len(spaces))]
+
 
     # Find all possible combinations
     for gapCombination in gapCombinations:
         listToAppend = ''
-        for i in range(len(runLengths)):
-            if len(gapCombination) == len(runLengths):
-                for _ in range(gapCombination[i]):
-                    listToAppend += '.'
-            for _ in range(runLengths[i]):
+
+        for _ in range(gapCombination[0]):
+            listToAppend += '.'
+
+        for indexRL in range(len(runLengths)):
+
+            for _ in range(runLengths[indexRL]):
                 listToAppend += '#'
-            if len(gapCombination) != len(runLengths) and i < len(gapCombination):
-                for _ in range(gapCombination[i]):
+
+            if indexRL < len(runLengths):
+                for _ in range(gapCombination[indexRL + 1]):
                     listToAppend += '.'
+
         allRowCombinations.append(listToAppend)
 
     # Eliminate all combinations that don't work
     possibleRowCombinations = []
     for rowCombination in allRowCombinations:
-        rowPossible = True
-        for i in range(len(rowCombination)):
-            if sequence[i] != '?' and sequence[i] != rowCombination[i]:
-                rowPossible = False
+        rowPossible = all(
+            sequence[indexRC] in ['?', rowCombination[indexRC]]
+            for indexRC in range(len(rowCombination))
+        )
         if rowPossible:
             possibleRowCombinations.append(rowCombination)
+        print(f'{rowCombination} is {'GOOD' if rowPossible else 'bad'}')
 
-    print('e')
+    totalPossible += len(possibleRowCombinations)
+
+    print(totalPossible)
 
 
 
