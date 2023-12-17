@@ -10,7 +10,7 @@ def hashString(s: str) -> int:
 
 def getInput():
     currentPath = os.path.normpath(os.path.realpath(os.path.split(__file__)[0]))
-    filename = os.path.join(currentPath, "input.txt")
+    filename = os.path.join(currentPath, "testin.txt")
     with open(filename, 'r') as f:
         inputArray = f.readlines()
     return inputArray
